@@ -10,25 +10,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.testsdemo.testcrud.dto.CreateEIDto;
+import com.testsdemo.testcrud.dto.CreateExpDto;
+import com.testsdemo.testcrud.dto.CreateSkillDto;
 import com.testsdemo.testcrud.dto.ResponseDto;
-import com.testsdemo.testcrud.models.EducationalInfomation;
-import com.testsdemo.testcrud.services.EducationalInfomationService;
-
-import com.google.gson.Gson; 
-import com.google.gson.GsonBuilder;  
+import com.testsdemo.testcrud.models.ExpInfo;
+import com.testsdemo.testcrud.models.Skill;
+import com.testsdemo.testcrud.services.SkillService;  
 
 @RestController
-@RequestMapping(value = "/api/educations", produces = "application/json")
-public class EducationalInfomationController {
+@RequestMapping(value = "/api/skill", produces = "application/json")
+public class SkillController {
 	
 	@Autowired
-	private EducationalInfomationService eiService;
+	private SkillService skillService;
 	
 	@GetMapping(path="/{userId}")
 	public ResponseDto getByUserId(@PathVariable int userId) {
 		try {
-			Iterable<EducationalInfomation> users = eiService.getAllByUserid(userId);
+			Iterable<Skill> users = skillService.getAllByUserid(userId);
 		
 			return new ResponseDto(true,"ok",users);
 		}catch(Exception ex) {
@@ -40,10 +39,10 @@ public class EducationalInfomationController {
 	
 	@PostMapping(path="")
 	@ResponseBody
-	public ResponseDto getByUserId(@RequestBody CreateEIDto ei) {
+	public ResponseDto getByUserId(@RequestBody CreateSkillDto  e) {
 		try {
-			EducationalInfomation n = eiService.add(ei);
-			if(n == null) throw new Error("add user error");
+			Skill n = skillService.add(e);
+			if(n == null) throw new Error("add error");
 			return new ResponseDto(true,"ok");
 		}catch(Exception ex) {
 			System.out.println("ERROR->");
@@ -56,8 +55,8 @@ public class EducationalInfomationController {
 	@ResponseBody
 	public ResponseDto deleteById(@PathVariable int userId , @PathVariable int id) {
 		try {
-			int result = eiService.delete(userId,id);
-			if(result == 0) throw new Error("delete user error");
+			int result = skillService.delete(userId,id);
+			if(result == 0) throw new Error("delete error");
 			return new ResponseDto(true,"ok");
 		}catch(Exception ex) {
 			System.out.println("ERROR->");

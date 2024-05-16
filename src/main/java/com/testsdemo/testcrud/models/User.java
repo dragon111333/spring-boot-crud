@@ -66,6 +66,12 @@ public class User {
   
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<EducationalInfomation> educationalInfomations;
+  
+  @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+  private List<ExpInfo> expInfos;
+  
+  @OneToMany(mappedBy="user",cascade = CascadeType.ALL)
+  private List<Skill> skills;
 	
 	public Integer getId() {
 		return id;
