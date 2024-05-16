@@ -12,22 +12,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.testsdemo.testcrud.dto.CreateSkillDto;
+import com.testsdemo.testcrud.dto.CreateInterestInfoDto;
 import com.testsdemo.testcrud.dto.ResponseDto;
-import com.testsdemo.testcrud.models.Skill;
-import com.testsdemo.testcrud.services.SkillService;  
+import com.testsdemo.testcrud.models.InterestInfo;
+import com.testsdemo.testcrud.services.InterestInfoService;  
 
 @RestController
-@RequestMapping(value = "/api/skill", produces = "application/json")
-public class SkillController {
+@RequestMapping(value = "/api/interest-info", produces = "application/json")
+public class InterestInfoController {
 	
 	@Autowired
-	private SkillService skillService;
+	private InterestInfoService interestInfoService;
 	
 	@GetMapping(path="/{userId}")
 	public ResponseDto getByUserId(@PathVariable int userId) {
 		try {
-			Iterable<Skill> users = skillService.getAllByUserid(userId);
+			Iterable<InterestInfo> users = interestInfoService.getAllByUserid(userId);
 		
 			return new ResponseDto(true,"ok",users);
 		}catch(Exception ex) {
@@ -39,10 +39,10 @@ public class SkillController {
 	
 	@PostMapping(path="")
 	@ResponseBody
-	public ResponseDto getByUserId(@RequestBody List<CreateSkillDto>  e) {
+	public ResponseDto getByUserId(@RequestBody List<CreateInterestInfoDto>  e) {
 		try {
-			for(CreateSkillDto eResult : e) {
-				Skill n = skillService.add(eResult);
+			for(CreateInterestInfoDto eResult : e) {
+				InterestInfo n = interestInfoService.add(eResult);
 				if(n == null) throw new Error("add error");
 			}
 			return new ResponseDto(true,"ok");
@@ -57,7 +57,7 @@ public class SkillController {
 	@ResponseBody
 	public ResponseDto deleteById(@PathVariable int userId , @PathVariable int id) {
 		try {
-			int result = skillService.delete(userId,id);
+			int result = interestInfoService.delete(userId,id);
 			if(result == 0) throw new Error("delete error");
 			return new ResponseDto(true,"ok");
 		}catch(Exception ex) {

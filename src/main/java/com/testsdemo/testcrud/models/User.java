@@ -72,6 +72,13 @@ public class User {
   
   @OneToMany(mappedBy="user",cascade = CascadeType.ALL)
   private List<Skill> skills;
+  
+  @OneToMany(mappedBy="user",cascade = CascadeType.ALL)
+  private List<InterestInfo> interestInfo;
+
+  @OneToMany(mappedBy="user",cascade = CascadeType.ALL)
+  private List<GuildInfo> guildInfo;
+  
 	
 	public Integer getId() {
 		return id;

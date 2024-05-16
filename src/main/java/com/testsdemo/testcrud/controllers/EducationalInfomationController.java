@@ -1,5 +1,7 @@
 package com.testsdemo.testcrud.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.testsdemo.testcrud.dto.CreateEIDto;
 import com.testsdemo.testcrud.dto.ResponseDto;
 import com.testsdemo.testcrud.models.EducationalInfomation;
-import com.testsdemo.testcrud.services.EducationalInfomationService;
-
-import com.google.gson.Gson; 
-import com.google.gson.GsonBuilder;  
+import com.testsdemo.testcrud.services.EducationalInfomationService;  
 
 @RestController
 @RequestMapping(value = "/api/educations", produces = "application/json")
@@ -40,10 +39,12 @@ public class EducationalInfomationController {
 	
 	@PostMapping(path="")
 	@ResponseBody
-	public ResponseDto getByUserId(@RequestBody CreateEIDto ei) {
+	public ResponseDto getByUserId(@RequestBody List<CreateEIDto> ei) {
 		try {
-			EducationalInfomation n = eiService.add(ei);
-			if(n == null) throw new Error("add user error");
+			for(CreateEIDto eResult : ei) {
+				EducationalInfomation n = eiService.add(eResult);
+				if(n == null) throw new Error("add error");
+			}
 			return new ResponseDto(true,"ok");
 		}catch(Exception ex) {
 			System.out.println("ERROR->");

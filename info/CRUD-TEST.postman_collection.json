@@ -1,0 +1,600 @@
+{
+	"info": {
+		"_postman_id": "73ac3012-43da-478f-a9da-4a241e0e573e",
+		"name": "CRUD-TEST",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13004369",
+		"_collection_link": "https://www.postman.com/cloudy-sunset-540156/workspace/crud-test/collection/13004369-73ac3012-43da-478f-a9da-4a241e0e573e?action=share&source=collection_link&creator=13004369"
+	},
+	"item": [
+		{
+			"name": "/api/users",
+			"item": [
+				{
+					"name": "api/users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/users",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"profile\": \"67\",\n    \"cover\": \"j\",\n    \"username\": \"thewin\",\n    \"name\": \"thewin\",\n    \"lastname\": \"thamma\",\n    \"nickname\": \"dragon\",\n    \"position\": \"Programmer\",\n    \"nationality\": \"Thai\",\n    \"tel\": \"094-156-2828\",\n    \"startingDate\": \"2567-05-21T16:14:59\",\n    \"addresss\": \"home\",\n    \"subDistrcit\": 76,\n    \"district\": 676,\n    \"province\": 6,\n    \"postalCode\": \"35150\",\n    \"facebook\": \"thewin\",\n    \"lineId\": \"0941562858\",\n    \"instagram\": \"thewin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/users/{id}",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"thewinkub\",\n    \"lastname\" : \"thamma\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/users/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"1"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "/api/educations",
+			"item": [
+				{
+					"name": "/api/educations/{user_id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/educations/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"educations",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/educations",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n    \"year\" : \"2099\"\n    ,\"userId\" : 1\n    ,\"universityName\":\"MUS\"\n    }\n    ,{\n        \"year\" : \"2015\"\n        ,\"userId\" : 1\n        ,\"universityName\":\"A\"\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/educations",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"educations"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/educations/{user_id}/{educational_id}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"thewinkub\",\n    \"lastname\" : \"thamma\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/educationss/1/453",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"educationss",
+								"1",
+								"453"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "/api/exp",
+			"item": [
+				{
+					"name": "/api/exp/{user_id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/exp/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"exp",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/exp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n\t{\n\t\t\t\"userId\": 1,\n\t\t\t\"startAt\": \"2022-12-10T00:00:00\",\n\t\t\t\"endAt\": \"2023-12-11T23:59:59\",\n\t\t\t\"name\": \"aaa\"\n\t},\n\t{\n\t\t\t\"userId\": 1,\n\t\t\t\"startAt\": \"2022-12-10T00:00:00\",\n\t\t\t\"endAt\": \"2023-12-11T23:59:59\",\n\t\t\t\"name\": \"555\"\n\t}\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/exp",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"exp"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/exp/{user_id}/{exp_id}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"thewinkub\",\n    \"lastname\" : \"thamma\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/exp/1/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"exp",
+								"1",
+								"1"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "/api/skill",
+			"item": [
+				{
+					"name": "/api/skill/{user_id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/skill/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"skill",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/skill",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n    \"userId\" : 1\n    ,\"name\" : \"Java\"\n    ,\"point\" : 7\n    },{\n        \"userId\" : 1\n        ,\"name\" : \"Spring\"\n        ,\"point\" : 7\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/skill",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"skill"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/skill/{user_id}/{skill_id}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"thewinkub\",\n    \"lastname\" : \"thamma\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/skill/1/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"skill",
+								"1",
+								"1"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "/api/interest-info",
+			"item": [
+				{
+					"name": "/api/interest-info/{user_id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/interest-info/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"interest-info",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/interest-info",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n    \"userId\" : 1\n    ,\"name\" : \"Java\"\n    },{\n        \"userId\" : 1\n        ,\"name\" : \"Spring\"\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/interest-info",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"interest-info"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/interest-info/{user_id}/{interest_info_id}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"thewinkub\",\n    \"lastname\" : \"thamma\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/interest-info/1/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"interest-info",
+								"1",
+								"1"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "/api/guild",
+			"item": [
+				{
+					"name": "/api/guild/{user_id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/guild/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"guild",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/guild",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n    \"userId\" : 1\n    ,\"name\" : \"Java\"\n    },{\n        \"userId\" : 1\n        ,\"name\" : \"Spring\"\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/guild",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"guild"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/guild/{user_id}/{guild_id}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"thewinkub\",\n    \"lastname\" : \"thamma\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/guild/1/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"guild",
+								"1",
+								"1"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}

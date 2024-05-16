@@ -12,22 +12,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.testsdemo.testcrud.dto.CreateSkillDto;
+import com.testsdemo.testcrud.dto.CreateGuildInfoDto;
 import com.testsdemo.testcrud.dto.ResponseDto;
-import com.testsdemo.testcrud.models.Skill;
-import com.testsdemo.testcrud.services.SkillService;  
+import com.testsdemo.testcrud.models.GuildInfo;
+import com.testsdemo.testcrud.services.GuildInfoService;  
 
 @RestController
-@RequestMapping(value = "/api/skill", produces = "application/json")
-public class SkillController {
+@RequestMapping(value = "/api/guild", produces = "application/json")
+public class GuildInfoController {
 	
 	@Autowired
-	private SkillService skillService;
+	private GuildInfoService guildInfoService;
 	
 	@GetMapping(path="/{userId}")
 	public ResponseDto getByUserId(@PathVariable int userId) {
 		try {
-			Iterable<Skill> users = skillService.getAllByUserid(userId);
+			Iterable<GuildInfo> users = guildInfoService.getAllByUserid(userId);
 		
 			return new ResponseDto(true,"ok",users);
 		}catch(Exception ex) {
@@ -39,10 +39,10 @@ public class SkillController {
 	
 	@PostMapping(path="")
 	@ResponseBody
-	public ResponseDto getByUserId(@RequestBody List<CreateSkillDto>  e) {
+	public ResponseDto getByUserId(@RequestBody List<CreateGuildInfoDto>  e) {
 		try {
-			for(CreateSkillDto eResult : e) {
-				Skill n = skillService.add(eResult);
+			for(CreateGuildInfoDto eResult : e) {
+				GuildInfo n = guildInfoService.add(eResult);
 				if(n == null) throw new Error("add error");
 			}
 			return new ResponseDto(true,"ok");
@@ -57,7 +57,7 @@ public class SkillController {
 	@ResponseBody
 	public ResponseDto deleteById(@PathVariable int userId , @PathVariable int id) {
 		try {
-			int result = skillService.delete(userId,id);
+			int result = guildInfoService.delete(userId,id);
 			if(result == 0) throw new Error("delete error");
 			return new ResponseDto(true,"ok");
 		}catch(Exception ex) {

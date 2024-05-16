@@ -1,5 +1,7 @@
 package com.testsdemo.testcrud.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.testsdemo.testcrud.dto.CreateExpDto;
 import com.testsdemo.testcrud.dto.ResponseDto;
-import com.testsdemo.testcrud.models.EducationalInfomation;
 import com.testsdemo.testcrud.models.ExpInfo;
 import com.testsdemo.testcrud.services.ExpService;  
 
@@ -38,10 +39,12 @@ public class ExpController {
 	
 	@PostMapping(path="")
 	@ResponseBody
-	public ResponseDto getByUserId(@RequestBody CreateExpDto  e) {
+	public ResponseDto getByUserId(@RequestBody List<CreateExpDto>  e) {
 		try {
-			ExpInfo n = expService.add(e);
-			if(n == null) throw new Error("add error");
+			for(CreateExpDto eResult : e) {
+				ExpInfo n = expService.add(eResult);
+				if(n == null) throw new Error("add error");
+			}
 			return new ResponseDto(true,"ok");
 		}catch(Exception ex) {
 			System.out.println("ERROR->");
