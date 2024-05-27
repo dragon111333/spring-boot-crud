@@ -1,0 +1,133 @@
+package com.testsdemo.testcrud.controllers;
+
+import ch.qos.logback.core.joran.spi.XMLUtil;
+import com.testsdemo.testcrud.dto.ResponseDto;
+import com.testsdemo.testcrud.util.XmlCustom;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.w3c.dom.CharacterData;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+
+@RestController
+@RequestMapping(path = "/test")
+public class XmlTestController {
+
+    @GetMapping("/kub")
+    public ResponseDto index(){
+        try{
+            HashMap<String, String> data = new HashMap<String,String>();
+            data.put("name","test");
+            return new ResponseDto(true,"ok",data);
+        }catch(Exception ex){
+            System.out.println("ERROR");
+            ex.printStackTrace();
+            return null;
+
+        }
+    }
+
+    @GetMapping("read-xml")
+    public ResponseDto readXmlExample(){
+        String rawXml =  "<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\n" +
+                "   <soap:Body>\n" +
+                "      <CurrentOilPriceResponse xmlns=\"http://www.pttor.com\">\n" +
+                "         <CurrentOilPriceResult><![CDATA[<PTTOR_DS>\n" +
+                "            <FUEL>\n" +
+                "                <PRICE_DATE>5/25/2024 5:00:00 AM</PRICE_DATE>\n" +
+                "                <PRODUCT>Premium Diesel</PRODUCT>\n" +
+                "                <PRICE>44.440</PRICE>\n" +
+                "            </FUEL>\n" +
+                "            <FUEL>\n" +
+                "                <PRICE_DATE>5/25/2024 5:00:00 AM</PRICE_DATE>\n" +
+                "                <PRODUCT>Gasoline 95</PRODUCT>\n" +
+                "                <PRICE>46.040</PRICE>\n" +
+                "            </FUEL>\n" +
+                "            <FUEL>\n" +
+                "                <PRICE_DATE>5/25/2024 5:00:00 AM</PRICE_DATE>\n" +
+                "                <PRODUCT>Gasohol 95</PRODUCT>\n" +
+                "                <PRICE>38.150</PRICE>\n" +
+                "            </FUEL>\n" +
+                "            <FUEL>\n" +
+                "                <PRICE_DATE>5/25/2024 5:00:00 AM</PRICE_DATE>\n" +
+                "                <PRODUCT>Gasohol 91</PRODUCT>\n" +
+                "                <PRICE>37.780</PRICE>\n" +
+                "            </FUEL>\n" +
+                "            <FUEL>\n" +
+                "                <PRICE_DATE>5/25/2024 5:00:00 AM</PRICE_DATE>\n" +
+                "                <PRODUCT>Gasohol E20</PRODUCT>\n" +
+                "                <PRICE>36.040</PRICE>\n" +
+                "            </FUEL>\n" +
+                "            <FUEL>\n" +
+                "                <PRICE_DATE>5/25/2024 5:00:00 AM</PRICE_DATE>\n" +
+                "                <PRODUCT>Gasohol E85</PRODUCT>\n" +
+                "                <PRICE>35.790</PRICE>\n" +
+                "            </FUEL>\n" +
+                "            <FUEL>\n" +
+                "                <PRICE_DATE>5/25/2024 5:00:00 AM</PRICE_DATE>\n" +
+                "                <PRODUCT>Diesel</PRODUCT>\n" +
+                "                <PRICE>32.440</PRICE>\n" +
+                "            </FUEL>\n" +
+                "            <FUEL>\n" +
+                "                <PRICE_DATE>5/25/2024 5:00:00 AM</PRICE_DATE>\n" +
+                "                <PRODUCT>Super Power GSH95</PRODUCT>\n" +
+                "                <PRICE>46.740</PRICE>\n" +
+                "            </FUEL>\n" +
+                "        </PTTOR_DS>]]></CurrentOilPriceResult>\n" +
+                "      </CurrentOilPriceResponse>\n" +
+                "   </soap:Body>\n" +
+        "</soap:Envelope>";
+
+        try{
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance() ;
+            factory.setNamespaceAware(true);
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            InputStream is = new ByteArrayInputStream(rawXml.getBytes());
+            Document doc = builder.parse(is);
+
+            NodeList currentOilPriceResult = doc.getElementsByTagName("CurrentOilPriceResult");
+            Node innerCurrentOilPriceNode = currentOilPriceResult.item(0).getFirstChild();
+            String innerCurrentOilPriceRawString =((CharacterData) currentOilPriceResult.item(0).getFirstChild()).getData();
+
+            print("currentOilPriceResult LENGTH : "+currentOilPriceResult.getLength());
+            print("===========>"+XmlCustom.nodeToString(innerCurrentOilPriceNode)+"<============");
+
+            Document innerCurrentOilPriceResultDocument = builder.parse(new ByteArrayInputStream(innerCurrentOilPriceRawString.getBytes()));
+            NodeList fuels = innerCurrentOilPriceResultDocument.getElementsByTagName("FUEL");
+            ArrayList<HashMap<String,String>> resultJson = new ArrayList<HashMap<String,String>>();
+
+            for(int index = 0 ;index < fuels.getLength();index++){
+                Element fuel = (Element) fuels.item(index);
+                HashMap<String,String> innerJson = new HashMap<String,String>();
+
+                innerJson.put("price_date",fuel.getElementsByTagName("PRICE_DATE").item(0).getTextContent());
+                innerJson.put("product",fuel.getElementsByTagName("PRODUCT").item(0).getTextContent());
+                innerJson.put("price",fuel.getElementsByTagName("PRICE").item(0).getTextContent());
+
+                resultJson.add(innerJson);
+            }
+
+            return new ResponseDto(true,"ok",resultJson);
+        }catch(Exception ex){
+            System.out.println("ERROR");
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    private void print(String result){
+        System.out.println(result);
+    }
+
+}
