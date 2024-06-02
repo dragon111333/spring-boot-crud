@@ -2,8 +2,12 @@ package com.testsdemo.testcrud.controllers;
 
 import ch.qos.logback.core.joran.spi.XMLUtil;
 import com.testsdemo.testcrud.dto.ResponseDto;
+import com.testsdemo.testcrud.services.SkillService;
+import com.testsdemo.testcrud.services.UsersService;
 import com.testsdemo.testcrud.util.XmlCustom;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.w3c.dom.CharacterData;
@@ -23,6 +27,10 @@ import java.util.HashMap;
 @RestController
 @RequestMapping(path = "/test")
 public class XmlTestController {
+    @Autowired
+    private UsersService userService;
+    @Autowired
+    private SkillService skillService;
 
     @GetMapping("/kub")
     public ResponseDto index(){
@@ -34,7 +42,30 @@ public class XmlTestController {
             System.out.println("ERROR");
             ex.printStackTrace();
             return null;
+        }
+    }
 
+    @GetMapping("/query/{table}")
+    public ResponseDto fuckYouBitch(@PathVariable String table){
+        try{
+            System.out.println("table -->"+table);
+            Object result = new Object();
+
+            switch(table.toLowerCase()){
+                case "users" :
+                    result = (Object) userService.getAll();
+                    break;
+                case "skill":
+                    result = (Object) skillService.getAll();
+                    break;
+                default:
+                    result = (Object) new ArrayList<HashMap<String,String>>();
+                    break;
+            }
+            return new ResponseDto(true,"ok",result);
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return null;
         }
     }
 

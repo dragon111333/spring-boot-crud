@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -65,18 +66,23 @@ public class User {
   private String instagram;
   
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+  @JsonManagedReference
   private List<EducationalInfomation> educationalInfomations;
   
   @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+  @JsonManagedReference
   private List<ExpInfo> expInfos;
   
   @OneToMany(mappedBy="user",cascade = CascadeType.ALL)
+  @JsonManagedReference
   private List<Skill> skills;
   
   @OneToMany(mappedBy="user",cascade = CascadeType.ALL)
+  @JsonManagedReference
   private List<InterestInfo> interestInfo;
 
   @OneToMany(mappedBy="user",cascade = CascadeType.ALL)
+  @JsonManagedReference
   private List<GuildInfo> guildInfo;
   
 	

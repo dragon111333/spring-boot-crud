@@ -11,9 +11,9 @@ import com.testsdemo.testcrud.repo.UsersRepo;
 @Service
 public class UsersService {
 	
-	@Autowired
-	private UsersRepo userRepo;
-	
+    @Autowired
+    private UsersRepo userRepo;
+
 	public Iterable<User> getAll() {
 		try {
 			return this.userRepo.findAll();

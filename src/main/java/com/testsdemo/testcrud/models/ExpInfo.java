@@ -2,6 +2,7 @@ package com.testsdemo.testcrud.models;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -27,6 +28,7 @@ public class ExpInfo {
 	  
 	  @ManyToOne(fetch = FetchType.LAZY)
 	  @JoinColumn(name = "user_id")
+	  @JsonBackReference
 	  private User user;
 	  
 	public ExpInfo() {

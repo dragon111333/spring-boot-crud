@@ -23,6 +23,15 @@ public class SkillService {
 	
 	@Autowired
 	private EntityManager entityManager;
+
+	public Iterable<Skill> getAll(){
+		try{
+			return this.skillRepo.findAll();
+		}catch(Exception ex){
+			ex.printStackTrace();
+			return null;
+		}
+	}
 	
 	public Iterable<Skill> getAllByUserid(int userId) {
 		String sql ="SELECT e.*FROM skill e WHERE e.user_id = :userId";
