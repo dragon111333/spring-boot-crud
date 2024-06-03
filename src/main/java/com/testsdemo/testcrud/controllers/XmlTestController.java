@@ -129,7 +129,7 @@ public class XmlTestController {
 
             NodeList currentOilPriceResult = doc.getElementsByTagName("CurrentOilPriceResult");
             Node innerCurrentOilPriceNode = currentOilPriceResult.item(0).getFirstChild();
-            String innerCurrentOilPriceRawString =((CharacterData) currentOilPriceResult.item(0).getFirstChild()).getData();
+            String innerCurrentOilPriceRawString =((CharacterData) innerCurrentOilPriceNode).getData();
 
             print("currentOilPriceResult LENGTH : "+currentOilPriceResult.getLength());
             print("===========>"+XmlCustom.nodeToString(innerCurrentOilPriceNode)+"<============");
@@ -148,7 +148,6 @@ public class XmlTestController {
 
                 resultJson.add(innerJson);
             }
-
             return new ResponseDto(true,"ok",resultJson);
         }catch(Exception ex){
             System.out.println("ERROR");
@@ -156,7 +155,6 @@ public class XmlTestController {
             return null;
         }
     }
-
     private void print(String result){
         System.out.println(result);
     }
