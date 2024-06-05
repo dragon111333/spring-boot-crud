@@ -4,7 +4,7 @@ import ch.qos.logback.core.joran.spi.XMLUtil;
 import com.testsdemo.testcrud.dto.ResponseDto;
 import com.testsdemo.testcrud.services.SkillService;
 import com.testsdemo.testcrud.services.UsersService;
-import com.testsdemo.testcrud.util.XmlCustom;
+import com.testsdemo.testcrud.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,9 +20,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
-
+import java.util.concurrent.ExecutionException;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/test")
@@ -155,6 +159,75 @@ public class XmlTestController {
             return null;
         }
     }
+
+    @GetMapping("/date")
+    public ResponseDto testDate() {
+        try {
+            String result =  DateTimeUtil.toThaiFullDateString(new Date());
+            return new ResponseDto(true, "ok",result);
+        } catch (Exception ex) {
+            System.out.println("ERROR");
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+
+    @GetMapping("/currency")
+    public ResponseDto testCurrency() {
+        try {
+           // String result =  CurrencyUtil.
+            HashMap<String,String> result = new HashMap<String,String>();
+
+            BigDecimal value = new BigDecimal(99999999.23423);
+
+            result.put("comma", CurrencyUtil.toNumberWithThousand(value));
+            result.put("toThaiBaht",CurrencyUtil.toThaiBaht(value));
+
+            return new ResponseDto(true, "ok",result);
+        } catch (Exception ex) {
+            System.out.println("ERROR");
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+
+    @GetMapping("/common")
+    public ResponseDto testCommonUtil() {
+        try {
+            List<String> testList = new ArrayList<String>();
+            // String result =  CurrencyUtil.
+            HashMap<String,String> result = new HashMap<String,String>();
+            result.put("toFullName", CommonUtil.toFullName("THEWIN","THAMMA"));
+            result.put("generateUUIDWithNoHyphen",CommonUtil.generateUUIDWithNoHyphen());
+            result.put("validateEmailFormatValid",(CommonUtil.validateEmailFormat("test@ok.com")? "true" : "false") );
+            result.put("validateEmailFormatInvalid",(CommonUtil.validateEmailFormat("tes@com")? "true" : "false") );
+
+            return new ResponseDto(true, "ok",result);
+        } catch (Exception ex) {
+            System.out.println("ERROR");
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @GetMapping("/enum")
+    public ResponseDto testEnum() {
+        try {
+            HashMap<String,String> result = new HashMap<String,String>();
+            EnumTest.init();
+
+            return new ResponseDto(true, "ok",result);
+        } catch (Exception ex) {
+            System.out.println("ERROR");
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+
+
     private void print(String result){
         System.out.println(result);
     }
