@@ -2,8 +2,10 @@ package com.testsdemo.testcrud.controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Optional;
 
+import com.testsdemo.testcrud.models.views.ViewUserExpInfo;
+import com.testsdemo.testcrud.repo.UsersRepo;
+import com.testsdemo.testcrud.repo.views.ViewUserExpInfoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.testsdemo.testcrud.dto.ResponseDto;
 import com.testsdemo.testcrud.models.User;
-import com.testsdemo.testcrud.repo.UsersRepo;
 import com.testsdemo.testcrud.services.UsersService;
 
 @RestController()
@@ -25,7 +26,11 @@ public class UsersController {
 	
     @Autowired
     private UsersService usersService;
-    
+	@Autowired
+	private UsersRepo usersRepo;
+	@Autowired
+	private ViewUserExpInfoRepo viewuserExpInfoRepo;
+
 	@GetMapping("/users")
 	@ResponseBody
 	public ResponseDto getAllUsers() {
@@ -68,7 +73,36 @@ public class UsersController {
 		}
 	}
 
-    
+	@GetMapping(path="/users/{userId}")
+	@ResponseBody
+	public ResponseDto getUserById(@PathVariable int userId) {
+		try {
+			User result = this.usersService.getById(userId);
+			return new ResponseDto(true,"ok",result);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			return new ResponseDto(false,"error");
+		}
+	}
+
+	@GetMapping(path="/users/{userId}/exp")
+	@ResponseBody
+	public ResponseDto getuserExp(@PathVariable int userId) {
+		try {
+			Iterable<ViewUserExpInfo> normalExp = this.viewuserExpInfoRepo.findByUserId(userId);
+			String userExpWithSqlFunction = this.usersRepo.getUserExpDetail(userId);
+
+			HashMap<String,Object> results = new HashMap<String,Object>();
+			results.put("normalExp",normalExp);
+			results.put("userExpWithSqlFunction",userExpWithSqlFunction);
+
+			return new ResponseDto(true,"ok",results);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			return new ResponseDto(false,"error");
+		}
+	}
+
     @GetMapping("/users/test-dto")
     @ResponseBody
     public ResponseDto testResponseDto(){
