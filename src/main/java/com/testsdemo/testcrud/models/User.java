@@ -15,8 +15,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 
+//ใช้ user ไม่ได้เพราะซ้ำกับ MS SQL SERVER
 @Entity
-@Table(name="user")
+@Table(name="[user]")
 public class User {
   @Id
   @GeneratedValue(strategy=GenerationType.AUTO)
@@ -43,7 +44,7 @@ public class User {
   @Column(name="starting_date")
   private LocalDateTime startingDate;
 
-  @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+  @Column(name = "created_at", columnDefinition = "DATETIME2 DEFAULT CURRENT_TIMESTAMP")
   private LocalDateTime createdAt;
   
   

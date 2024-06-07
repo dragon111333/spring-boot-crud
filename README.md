@@ -1,9 +1,38 @@
 #### :)-> How to : https://spring.io/guides/gs/accessing-data-mysql 
 
+## สำคัญ
+
+1. สร้าง User/password สำหรับ CONNECT
+
+2. เปิด TCP/IP สำหรับ SQL Server ด้วย
+        
+        Solution
+        
+        TCP/IP network traffic needs to be enabled on the SQL Server, so that remote connections will be allowed on the SQL server.
+        
+        1.Run the SQL Server Configuration Manager (mmc.exe).
+        
+        2.Click on the SQL Server Network Configuration.
+        
+        3.Select Protocols for SQLEXPRESS and check if the TCP/IP Protocol is enabled.
+        
+        4.If the TCP/IP is disabled, double-click on it and change the Enabled row status to Yes.
+        
+        5.In order to finish the adjustment, select SQL Server Services, click on SQL Server and restart it.
+        
+        6.SQL connection should now be available.
+
+
+3. ต้อง Start service SQL SERVER BROWSER ด้วย!!!
+
+
 ### SQL
 view
-
-    CREATE VIEW vw_user_exp AS
+    
+    DROP TABLE IF EXISTS [vw_user_exp];
+    DROP VIEW IF EXISTS [vw_user_exp];
+    
+    CREATE VIEW [vw_user_exp] AS
     SELECT
         u.id AS user_id,
         u.name AS user_name,
@@ -13,50 +42,37 @@ view
         e.start_at AS exp_start_at,
         e.end_at AS exp_end_at
     FROM
-    (SELECT * FROM user) as u
+        (SELECT * FROM [user]) as u
     INNER JOIN
-    (SELECT * FROM exp_info) as e
+        (SELECT * FROM exp_info) as e
     ON u.id = e.user_id;
+
 function
-
+    
     DROP FUNCTION IF EXISTS get_user_exp;
-
-    DELIMITER //
-        
-    CREATE FUNCTION get_user_exp(user_id INT) RETURNS VARCHAR(255) DETERMINISTIC
-    CREATE VIEW vw_user_exp AS
-    SELECT
-        u.id AS user_id,
-        u.name AS user_name,
-        u.lastname AS user_lastname,
-        e.id AS exp_id,
-        e.name AS exp_name,
-        e.start_at AS exp_start_at,
-        e.end_at AS exp_end_at
-    FROM
-    (SELECT * FROM user) as u
-    INNER JOIN
-    (SELECT * FROM exp_info) as e
-    ON u.id = e.user_id;
-	BEGIN
-		DECLARE exp_year INT(4);
-		DECLARE exp_month INT(4);
-
-		SELECT 
-			 SUM(FLOOR(DATEDIFF(exp_end_at,exp_start_at)/365))
-			,SUM(FLOOR(TIMESTAMPDIFF(MONTH,exp_start_at,exp_end_at)))
- 		INTO exp_year,exp_month
-		FROM vw_user_exp
-		WHERE user_id =1
-		GROUP BY user_id;
-
-		RETURN CONCAT('{"exp_year":',exp_year,',"exp_month": ',exp_month,'}');
-	END
-	// 
-	DELIMITER;
-
-
-    SELECT get_user_exp(1) as user_exp_detail;
+    
+    CREATE FUNCTION get_user_exp (@user_id INT)
+    RETURNS NVARCHAR(255)
+    AS
+    BEGIN
+    DECLARE @exp_year INT;
+    DECLARE @exp_month INT;
+    DECLARE @total_months INT;
+    
+        SELECT 
+            @exp_year = SUM(DATEDIFF(YEAR, exp_start_at, exp_end_at)),
+            @total_months = SUM(DATEDIFF(MONTH, exp_start_at, exp_end_at))
+        FROM vw_user_exp
+        WHERE user_id = @user_id
+        GROUP BY user_id;
+    
+        -- Calculate remaining months after years have been accounted for
+        SET @exp_month = @total_months % 12;
+    
+        RETURN CONCAT('{"exp_year":', @exp_year, ',"exp_month": ', @exp_month, '}');
+    END;
+    
+    SELECT dbo.get_user_exp(1) AS user_experience;
 
 # **NOTE**
 

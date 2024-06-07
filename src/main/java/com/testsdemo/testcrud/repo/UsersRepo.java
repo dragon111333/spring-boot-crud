@@ -13,6 +13,6 @@ import java.util.List;
 @Repository
 public interface UsersRepo extends CrudRepository<User, Integer> {
 
-        @Query(value=" SELECT get_user_exp(:userId) as user_exp_detail",nativeQuery = true)
+        @Query(value=" SELECT dbo.get_user_exp(:userId) as user_exp_detail",nativeQuery = true)
         public String getUserExpDetail(@Param("userId") int userId);
 }
