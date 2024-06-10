@@ -13,6 +13,6 @@ public class CreateSkillDto extends Skill{
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
-	
-  
+
+
 }

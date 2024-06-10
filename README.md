@@ -120,3 +120,6 @@ _ตัวอย่าง JPQL_
     }
 
 _ตัวอย่าง Native Query ของ MySQL_
+
+* ### JWT
+   ขอบคุณ : [https://vipawadeearmatsombut.medium.com/ตัวอย่างการใช้-jwt-ร่วมกับ-java-777c024b4279](https://vipawadeearmatsombut.medium.com/ตัวอย่างการใช้-jwt-ร่วมกับ-java-777c024b4279)

@@ -9,8 +9,11 @@ import org.joda.time.LocalDateTime;
 import org.springframework.http.MediaType;
 import org.springframework.ui.ModelMap;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -187,6 +190,10 @@ public class CommonUtil {
         return Optional.ofNullable(fileName)
                 .filter(f -> f.contains(dot))
                 .map(m -> m.substring(fileName.lastIndexOf(dot) + 1));
+    }
+
+    public static String readFile(String path) throws IOException {
+        return Files.readString(Paths.get(path));
     }
 
     public static String guessMimeTypeByFileName(String fileName) {

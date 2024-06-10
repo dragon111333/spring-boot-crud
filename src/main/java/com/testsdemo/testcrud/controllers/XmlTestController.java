@@ -1,15 +1,24 @@
 package com.testsdemo.testcrud.controllers;
 
 import ch.qos.logback.core.joran.spi.XMLUtil;
+import com.testsdemo.testcrud.dto.JwtBody;
 import com.testsdemo.testcrud.dto.ResponseDto;
 import com.testsdemo.testcrud.services.SkillService;
 import com.testsdemo.testcrud.services.UsersService;
 import com.testsdemo.testcrud.util.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.*;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClientResponseException;
+import org.springframework.web.client.RestTemplate;
 import org.w3c.dom.CharacterData;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -21,7 +30,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.URI;
 import java.text.DecimalFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,12 +40,15 @@ import java.util.concurrent.ExecutionException;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/test")
+@RequestMapping(path = "/test", produces = "application/json")
 public class XmlTestController {
     @Autowired
     private UsersService userService;
     @Autowired
     private SkillService skillService;
+
+    private final String EXAMPLE_URL = "http://localhost:8080/api/users";
+
 
     @GetMapping("/kub")
     public ResponseDto index(){
@@ -225,11 +239,75 @@ public class XmlTestController {
             return null;
         }
     }
+    @GetMapping("/req")
+    public ResponseDto TestReq() {
+        try {
+            SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+            factory.setConnectTimeout(0);
+            factory.setReadTimeout(0);
 
+            RestTemplate restTemplate = new RestTemplate(factory);
+            String result = restTemplate.getForObject(EXAMPLE_URL, String.class);
 
+            return new ResponseDto(true, "ok", result);
+        } catch (Exception ex) {
+            System.out.println("ERROR");
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @GetMapping("/req-builder")
+    public ResponseDto TestReqWithBuilder() {
+        try {
+            String response = new RestApi().exchange(URI.create(EXAMPLE_URL),HttpMethod.GET,null,String.class);
+            return new ResponseDto(true, "ok",response);
+        } catch (Exception ex) {
+            System.out.println("ERROR");
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @PostMapping("/jwt-decode")
+    @ResponseBody
+    public ResponseDto jwtDecode(@RequestBody JwtBody jwtBody){
+        try{
+            JwtUtil ju = new JwtUtil("src/main/resources/rsa.public");
+            String tokenFromSender = jwtBody.getToken();
+
+            System.out.println(jwtBody.token);
+
+            Claims result = ju.deCode(tokenFromSender);
+
+            return new ResponseDto(true,"ok",result);
+        }catch(Exception ex){
+            System.out.println("ERROR");
+            ex.printStackTrace();
+
+            System.out.println("==============>"+ex.getClass().getName());
+            String message = "etract token error! ";
+            switch(ex.getClass().getName()){
+                case "io.jsonwebtoken.SignatureException":
+                    message += " Signature Exception";
+                    break;
+                case "io.jsonwebtoken.ExpiredJwtException" :
+                    message += " Token Expired";
+                    break;
+                case "io.jsonwebtoken.MalformedJwtException":
+                    message += " Token Incorrect format ";
+                    break;
+                default:
+                    break;
+            }
+            return new ResponseDto(false,message);
+        }
+    }
 
     private void print(String result){
         System.out.println(result);
     }
 
 }
+
+
