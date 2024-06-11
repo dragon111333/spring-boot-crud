@@ -1,23 +1,16 @@
 package com.testsdemo.testcrud.controllers;
 
-import ch.qos.logback.core.joran.spi.XMLUtil;
 import com.testsdemo.testcrud.dto.JwtBody;
 import com.testsdemo.testcrud.dto.ResponseDto;
+import com.testsdemo.testcrud.models.User;
 import com.testsdemo.testcrud.services.SkillService;
 import com.testsdemo.testcrud.services.UsersService;
 import com.testsdemo.testcrud.util.*;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 import org.w3c.dom.CharacterData;
 import org.w3c.dom.Document;
@@ -31,13 +24,11 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
-import java.text.DecimalFormat;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping(path = "/test", produces = "application/json")
@@ -46,6 +37,12 @@ public class XmlTestController {
     private UsersService userService;
     @Autowired
     private SkillService skillService;
+
+    @Autowired
+    private User userTemp;
+
+    @Autowired
+    private Iterable<User> userTempList;
 
     private final String EXAMPLE_URL = "http://localhost:8080/api/users";
 
@@ -240,7 +237,7 @@ public class XmlTestController {
         }
     }
     @GetMapping("/req")
-    public ResponseDto TestReq() {
+    public ResponseDto testReq() {
         try {
             SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
             factory.setConnectTimeout(0);
@@ -258,7 +255,7 @@ public class XmlTestController {
     }
 
     @GetMapping("/req-builder")
-    public ResponseDto TestReqWithBuilder() {
+    public ResponseDto testReqWithBuilder() {
         try {
             String response = new RestApi().exchange(URI.create(EXAMPLE_URL),HttpMethod.GET,null,String.class);
             return new ResponseDto(true, "ok",response);
@@ -304,6 +301,28 @@ public class XmlTestController {
         }
     }
 
+
+    @GetMapping("/global-cache")
+    public ResponseDto testGlobalChache() {
+        try {
+            User firstUser = this.userTemp;
+
+            String settingName = "testttttttt";
+            User foundUser = CommonUtil.iterableToList(this.userTempList).stream().filter(e ->e.getName().toLowerCase().equals(settingName)).findFirst().get();
+            HashMap<String,Object> result = new HashMap<String,Object>();
+
+            result.put("users",this.userTempList);
+            result.put("firtstUser",firstUser);
+            result.put("foundUser",foundUser);
+
+
+            return new ResponseDto(true, "ok",result);
+        } catch (Exception ex) {
+            System.out.println("ERROR");
+            ex.printStackTrace();
+            return null;
+        }
+    }
     private void print(String result){
         System.out.println(result);
     }

@@ -31,6 +31,10 @@ public class UsersController {
 	@Autowired
 	private ViewUserExpInfoRepo viewuserExpInfoRepo;
 
+	//------------TESTTTTTTTTTTTTTTTTTTT-----------------------
+	@Autowired
+	private User userTemp;
+
 	@GetMapping("/users")
 	@ResponseBody
 	public ResponseDto getAllUsers() {

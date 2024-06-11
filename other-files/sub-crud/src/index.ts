@@ -13,7 +13,8 @@ app.post("/", async (request : Request, response :Response) => {
         const payload : JwtPayload = {
             aud : "ABC",
             sub : "abc-defg-hijk",
-            azp :"test-123-test"
+            azp :"test-123-test",
+            test : "5555"
         };
         const options : object = {
             expiresIn: "1h" ,

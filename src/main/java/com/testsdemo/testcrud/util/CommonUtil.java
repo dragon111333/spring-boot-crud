@@ -29,6 +29,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.StreamSupport;
 
 
 public class CommonUtil {
@@ -194,6 +195,11 @@ public class CommonUtil {
 
     public static String readFile(String path) throws IOException {
         return Files.readString(Paths.get(path));
+    }
+
+    public static <T> List<T> iterableToList(final Iterable<T> iterable) {
+        return StreamSupport.stream(iterable.spliterator(), false)
+                .toList();
     }
 
     public static String guessMimeTypeByFileName(String fileName) {
