@@ -2,6 +2,7 @@ package com.testsdemo.testcrud.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.testsdemo.testcrud.models.User;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -200,6 +201,10 @@ public class CommonUtil {
     public static <T> List<T> iterableToList(final Iterable<T> iterable) {
         return StreamSupport.stream(iterable.spliterator(), false)
                 .toList();
+    }
+
+    public static User findUserByName(Iterable<User> users, String name){
+        return CommonUtil.iterableToList(users).stream().filter(e ->e.getName().toLowerCase().equals(name) ).findFirst().get();
     }
 
     public static String guessMimeTypeByFileName(String fileName) {

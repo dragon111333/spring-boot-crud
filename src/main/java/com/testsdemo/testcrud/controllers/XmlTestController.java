@@ -308,7 +308,7 @@ public class XmlTestController {
             User firstUser = this.userTemp;
 
             String settingName = "testttttttt";
-            User foundUser = CommonUtil.iterableToList(this.userTempList).stream().filter(e ->e.getName().toLowerCase().equals(settingName)).findFirst().get();
+            User foundUser = CommonUtil.findUserByName(this.userTempList,settingName);
             HashMap<String,Object> result = new HashMap<String,Object>();
 
             result.put("users",this.userTempList);
