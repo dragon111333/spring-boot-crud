@@ -24,10 +24,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.StreamSupport;
 
 @RestController
@@ -323,6 +320,47 @@ public class XmlTestController {
             return null;
         }
     }
+
+    @GetMapping("/dynamic-body")
+    public ResponseDto dynamicBody(@RequestBody Map<String,Object> requestBody){
+        try{
+//            :::::::Example Body]::::::
+//            {
+//                "name" : "test",
+//                    "students" : ["a","b"],
+//                "studentDetails" : [{"name":"a" , "number" : 1},{"name":"b" , "number" : 2}]
+//            }
+
+            int [] index= {0};
+            requestBody.forEach((key,value) -> {
+                System.out.println((index[0]+1)+".) KEY : "+key+" , VALUE : "+value);
+
+                if(key.equals("students")){
+
+                    List<?> students = (List<?>) requestBody.get("students");
+                    final int[] studentsIndex = {0};
+                    students.forEach((student)->{
+                        System.out.println("\t"+ studentsIndex[0]+1 +".) STUDENT -> "+student);
+                        studentsIndex[0]++;
+                    });
+
+                }else if(key.equals("studentDetails")){
+
+                    List<Map<String,?>> studentDetails = (List<Map<String,?>>) value;
+                    studentDetails.forEach(studentDetail->{
+                        System.out.println("\t"+studentDetail.get("number")+".) STUDENT DETAIL NAME : "+studentDetail.get("name"));
+                    });
+                }
+                index[0]++;
+            });
+
+            return new ResponseDto(true,"ok",requestBody);
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return new ResponseDto(false,"error",null);
+        }
+    }
+
     private void print(String result){
         System.out.println(result);
     }
