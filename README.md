@@ -1,6 +1,7 @@
 #### :)-> How to : https://spring.io/guides/gs/accessing-data-mysql 
 
 ## สำคัญ
+### ใช้ SQL Server บน Window
 
 1. สร้าง User/password สำหรับ CONNECT
 
@@ -25,7 +26,31 @@
 
 3. ต้อง Start service SQL SERVER BROWSER ด้วย!!!
 
+### สร้าง SQL Server ด้วย Docker 
+ขอบคุณ :` https://medium.com/mycostech/มาใช้-sql-server-บน-mac-ด้วย-docker-azure-data-studio-กันเถอะ-da9bf5c5a8d5`
 
+1.)
+
+
+      - สำหรับ Macbook chip Intel ใช้ Image ด้านล่างได้เลยครับ
+         sudo docker pull mcr.microsoft.com/mssql/server:2022-latest
+      - สำหรับ Macbook chip M1, M2 ใช้ Image นี้แทนครับ
+           sudo docker pull mcr.microsoft.com/azure-sql-edge
+      Note:
+      **ทำไมถึงใช้ azure-sql-edge
+      - จากวันนี้ที่ได้ลอง ถ้าเราใช้ image ของ mssql/server:2022-latest ใน chip M1 ตอนที่เรา start run container มันจะ Exit() ตลอดเลย
+           ตัว Azure SQL Edge คืออะไร
+      - คือตัว SQL Server/Azure SQL Database ที่ทำให้ขนาดมันเล็กลง กินทรัพยากรให้น้อยลง เพื่อที่จะสามารถเอาไปรันที่อุปกรณ์ปลายทางได้ (เช่น IoT) และทำงานได้แม้เราจะไม่ได้ต่อ internet (หลังจากนั้นค่อยส่งข้อมูลขึ้น cloud ภายหลังได้)
+
+
+   2.)
+      
+      - สำหรับ Macbook chip Intel ใช้ command ด้านล่างได้เลยฮ่ะ (รหัสต้อง 10 ตัว)
+        sudo docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=<YourStrong@Passw0rd>" -p 1433:1433 --name sql_server -h sql_server -d mcr.microsoft.com/mssql/server:2022-latest
+      - สำหรับ Macbook chip M1, M2 ใช้ command นี้แทนครับ (รหัสต้อง 10 ตัว)
+        sudo docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=<YourStrong@Passw0rd>" -p 1433:1433 --name sql_server -h sql_server -d mcr.microsoft.com/azure-sql-edge
+
+   3.) เช็คใน docker desktop แล้วรัน container ได้เลย
 ### SQL
 view
     

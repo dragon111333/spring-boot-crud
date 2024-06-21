@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
@@ -19,15 +20,25 @@ public class AppConfig {
     @Bean
     @Scope("singleton")
     public User userTemp(){
-        System.out.println("::::::::::::: GET USER TEMP TO CACHE :::::::::::::");
-        return this.usersRepo.findById(TARGET_ID).get();
+        try{
+            System.out.println("::::::::::::: GET USER TEMP TO CACHE :::::::::::::");
+            return this.usersRepo.findById(TARGET_ID).get();
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return new User();
+        }
    }
 
    @Bean
    @Scope("singleton")
    public Iterable<User> userListTemp(){
-       System.out.println("::::::::::::: GET USER TEMP TO CACHE WITH LIST :::::::::::::");
-       return  this.usersRepo.findAll();
+        try{
+            System.out.println("::::::::::::: GET USER TEMP TO CACHE WITH LIST :::::::::::::");
+            return  this.usersRepo.findAll();
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return (Iterable<User>) new ArrayList<User>();
+        }
    }
 
 }
