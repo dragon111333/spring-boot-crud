@@ -369,7 +369,7 @@ public class SandboxController {
     @GetMapping("/service-locator/{serviceName}")
     public ResponseDto serviceLocator(@PathVariable String serviceName){
         try{
-            MyService service = serviceLocator.getSerice(serviceName);
+            MyService service = serviceLocator.getService(serviceName);
             HashMap<String,String> result = service.doit();
             return new ResponseDto(true,"ok" ,result);
         }catch(Exception ex){
