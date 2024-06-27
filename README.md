@@ -51,6 +51,12 @@
         sudo docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=<YourStrong@Passw0rd>" -p 1433:1433 --name sql_server -h sql_server -d mcr.microsoft.com/azure-sql-edge
 
    3.) เช็คใน docker desktop แล้วรัน container ได้เลย
+
+   4.) Connection name 
+
+         Mac = localhost:1433
+      
+         Window = localhost,1433
 ### SQL
 view
     
