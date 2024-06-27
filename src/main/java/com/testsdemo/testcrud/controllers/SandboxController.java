@@ -6,7 +6,10 @@ import com.testsdemo.testcrud.models.User;
 import com.testsdemo.testcrud.services.SkillService;
 import com.testsdemo.testcrud.services.UsersService;
 import com.testsdemo.testcrud.util.*;
+import com.testsdemo.testcrud.util.servicelocatordemo.MyService;
+import com.testsdemo.testcrud.util.servicelocatordemo.MyServiceLocator;
 import io.jsonwebtoken.Claims;
+import org.bouncycastle.asn1.ocsp.ServiceLocator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -25,11 +28,10 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.*;
-import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping(path = "/test", produces = "application/json")
-public class XmlTestController {
+public class SandboxController {
     @Autowired
     private UsersService userService;
     @Autowired
@@ -355,6 +357,21 @@ public class XmlTestController {
             });
 
             return new ResponseDto(true,"ok",requestBody);
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return new ResponseDto(false,"error",null);
+        }
+    }
+
+    @Autowired
+    MyServiceLocator serviceLocator;
+
+    @GetMapping("/service-locator/{serviceName}")
+    public ResponseDto serviceLocator(@PathVariable String serviceName){
+        try{
+            MyService service = serviceLocator.getService(serviceName);
+            HashMap<String,String> result = service.doit();
+            return new ResponseDto(true,"ok" ,result);
         }catch(Exception ex){
             ex.printStackTrace();
             return new ResponseDto(false,"error",null);
